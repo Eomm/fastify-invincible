@@ -1,6 +1,6 @@
 {
   "name": "fastify-invincible",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "An hacky plugin to integrate healthchecks.io and keep your Fastify application up and running",
   "main": "index.js",
   "scripts": {
