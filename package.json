@@ -1,0 +1,39 @@
+{
+  "name": "fastify-invincible",
+  "version": "0.0.0",
+  "description": "An hacky plugin to integrate healthchecks.io and keep your Fastify application up and running",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard",
+    "lint:fix": "standard --fix",
+    "test": "tap test/**/*.test.js --no-cov"
+  },
+  "keywords": [
+    "fastify",
+    "healthcheck",
+    "healthchecks.io",
+    "healthchecks",
+    "ping",
+    "fastify-plugin"
+  ],
+  "author": "Manuel Spigolon <behemoth89@gmail.com> (https://github.com/Eomm)",
+  "funding": "https://github.com/Eomm/fastify-invincible?sponsor=1",
+  "license": "MIT",
+  "homepage": "https://github.com/Eomm/fastify-invincible#readme",
+  "dependencies": {
+    "fastify-plugin": "^4.5.1",
+    "undici": "^5.24.0"
+  },
+  "devDependencies": {
+    "fastify": "^4.22.2",
+    "standard": "^17.1.0",
+    "tap": "^16.3.8"
+  },
+  "bugs": {
+    "url": "https://github.com/Eomm/fastify-invincible/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eomm/fastify-invincible.git"
+  }
+}
