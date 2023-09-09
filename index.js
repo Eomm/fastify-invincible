@@ -4,23 +4,18 @@ const fp = require('fastify-plugin')
 const { request } = require('undici')
 
 async function fastifyInvincible (fastify, options) {
-  const createCheckPayload = {
-    name: 'My Check',
-    slug: 'my-check',
-    tags: 'fastify plugin',
-    desc: 'My check description',
-    timeout: 3600, // Minimum: 60 (one minute), maximum: 31536000 (365 days).
-    grace: 3600, // Minimum: 60 (one minute), maximum: 31536000 (365 days).
-    // schedule: '', // If you specify both timeout and schedule parameters, Healthchecks.io will create a Cron check and ignore the timeout value.
-    tz: 'UTC', // Timezone for the schedule. See the list of supported timezones.
-    manual_resume: false,
-    methods: '',
-    channels: '', // integration
-    unique: ['name', 'slug']
-
+  // https://api.uptimerobot.com/v2/getMonitors?api_key=YOUR_API_KEY_HERE
+  const createMonitorPayload = {
+    api_key: options.key,
+    friendly_name: 'My code',
+    url: 'https://example.com',
+    type: 1, // HTTP(s)
+    interval: 300, // seconds
+    timeout: 30, // seconds, max 60
+    http_method: 'HEAD'
   }
 
-  await undiciPost(createCheckPayload, options.key)
+  await undiciPost(createMonitorPayload, options.key)
 }
 
 const plugin = fp(fastifyInvincible, {
@@ -33,17 +28,31 @@ module.exports.default = plugin
 module.exports.fastifyInvincible = plugin
 
 async function undiciPost (payload, key) {
-  const { statusCode, headers, body } = await request('https://healthchecks.io/api/v3/checks/', {
+  const { statusCode, headers, body } = await request('https://api.uptimerobot.com/v2/newMonitor', {
     method: 'POST',
     body: JSON.stringify(payload),
     throwOnError: true,
     headers: {
-      'content-type': 'application/json',
-      'X-Api-Key': key
+      'content-type': 'application/json'
+      // 'X-Api-Key': key
     }
   })
+
+  // FREE plan : 10 req/min
+  // Retry-After header
+  //   'x-ratelimit-remaining': '9',
+  // https://api.uptimerobot.com/v2/methodName?format=json
 
   console.log('response received', statusCode)
   console.log('headers', headers)
   console.log('data', await body.json())
+
+  // {
+  //   stat: 'fail',
+  //   error: {
+  //     type: 'missing_parameter',
+  //     parameter_name: 'api_key',
+  //     message: 'api_key parameter is missing.'
+  //   }
+  // }
 }
