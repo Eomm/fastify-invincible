@@ -16,14 +16,15 @@ async function fastifyInvincible (fastify, options) {
 
   const buildIntegrator = supportedIntegrations[integration]
 
-  const instance = buildIntegrator(options[`${integration}Options`])
-  const result = await instance.createMonitor(name, pollingUrl, pollingIntervalSeconds)
-
-  if (result.isCreated === false) {
-    fastify.log.info(`Monitor already exists at ${result.id}`)
-  } else {
-    fastify.log.info(`Monitor created at ${result.id}`)
-  }
+  fastify.addHook('onListen', async function hook () {
+    const instance = buildIntegrator(options[`${integration}Options`])
+    const result = await instance.createMonitor(name, pollingUrl, pollingIntervalSeconds)
+    if (result.isCreated === false) {
+      fastify.log.info(`Monitor already exists at ${result.id}`)
+    } else {
+      fastify.log.info(`Monitor created at ${result.id}`)
+    }
+  })
 }
 
 const plugin = fp(fastifyInvincible, {
