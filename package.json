@@ -22,7 +22,7 @@
   "homepage": "https://github.com/Eomm/fastify-invincible#readme",
   "dependencies": {
     "fastify-plugin": "^4.5.1",
-    "undici": "^5.24.0"
+    "undici": "^6.4.0"
   },
   "devDependencies": {
     "fastify": "^4.23.2",
